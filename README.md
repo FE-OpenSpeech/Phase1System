@@ -22,7 +22,7 @@ More information can be found at:
 - https://flatearthinc.com/open-speech-platform-0
 - https://store.flatearthinc.com/
 
-### The Phase1System repository is organized as follows:
+## The Phase1System repository is organized as follows:
 
 #### AD1939 Audio Codec (4 ADC/8 DAC with PLL, 192 kHz, 24-Bit Codec)
 http://www.analog.com/en/products/audio-video/audio-codecs/ad1939.html
