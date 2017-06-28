@@ -24,8 +24,8 @@ More information can be found at:
 
 ## The Phase1System repository is organized as follows:
 
-#### AD1939 Audio Codec (4 ADC/8 DAC with PLL, 192 kHz, 24-Bit Codec)
-http://www.analog.com/en/products/audio-video/audio-codecs/ad1939.html
+#### [AD1939 Audio Codec](http://www.analog.com/en/products/audio-video/audio-codecs/ad1939.html) (Analog Device's 4 ADC/8 DAC with PLL, 192 kHz, 24-Bit Codec)
+
 
 - **/AD1939**    - contains source and material related to Analog Device's AD1939 audio codec that we used for the audio daughter card
 - **/AD1939/Source_Files**         - contains the source code
