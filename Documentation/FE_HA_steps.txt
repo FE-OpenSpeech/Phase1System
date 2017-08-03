@@ -1,0 +1,92 @@
+cSteps to convert a Device Tree Source file (.dts) to a Device Tree Blob file (.dtb)
+
+1. Open the SoC EDS Command Shell  (search "eds" on windows search bar - Win10)
+2. go to project directory 
+              cd E:/NIH/FlatEarthOpenSpeechRepo/DE10/System_AD1939_Full_Demo2
+3. Enter command to generate .dts:  
+sopc2dts --input soc_system.sopcinfo --output soc_system.dts --type dts --board soc_system_board_info.xml --board hps_common_board_info.xml --bridge-removal all --clocks
+    a.  Ignore any "unkown" statements
+4. Enter command to generate .dtb:  
+dtc -I dts -O dtb -o soc_system.dtb soc_system.dts
+5. copy .dtb to Windows FAT32 partition on microSD flash card
+
+ref:  https://rocketboards.org/foswiki/view/Documentation/GSRD131DeviceTreeGenerator
+
+------------------------------------------------------------------------------------------------------
+Steps to create .rbf file from .sof file so that Linux will autoload bit stream
+
+1.  Open Quartus
+2.  File->Convert Programming Files
+    a.  Set Programming Type to .rbf
+    b.  Select Input file to the appropriate input .sof  file.
+    c.  Name output file to be soc_system.rbf
+    d.  Set Mode to be Passive Parallel x16
+    e.  Generate
+3. copy .rbf to Windows FAT32 partition on microSD flash card
+
+------------------------------------------------------------------------------------------------------
+Set sample rate:
+
+./ad1939_48
+
+
+------------------------------------------------------------------------------------------------------
+Add Drivers:  (Assuming at /root)  cd ~  to go to root
+
+cd Drivers
+insmod FE_Qsys_FIR.ko
+insmod FE_Qsys_DRC.ko
+
+
+------------------------------------------------------------------------------------------------------
+Put in Passthrough mode:
+
+cd ..
+cd /sys/class
+
+cd fe_fir249/fe_fir249
+echo 1.0,0.0,0.0,0.0,0.0,0.0 > coefs
+cat coefs
+
+cd /sys/class
+cd fe_fir248/fe_fir248
+echo 1.0,0.0,0.0,0.0,0.0,0.0 > coefs
+cat coefs
+
+cd /sys/class
+cd fe_drc247/fe_drc247
+echo 1 > passthrough
+
+
+cd /sys/class
+cd fe_fir248/fe_fir248
+echo -0.00080748,0.00031397,-0.00035158,0.0011205,0.001834,-0.0022293,-0.0019941,0.0008912,-0.0010836,0.0035779,0.005867,-0.0069946,-0.0060645,0.0026132,-0.0030598,0.0097431,0.015453,-0.017888,-0.015129,0.0063914,-0.0073792,0.023316,0.036964,-0.043145,-0.037187,0.016233,-0.019731,0.067436,0.12065,-0.17126,-0.21088,0.23262,0.23262,-0.21088,-0.17126,0.12065,0.067436,-0.019731,0.016233,-0.037187,-0.043145,0.036964,0.023316,-0.0073792,0.0063914,-0.015129,-0.017888,0.015453,0.0097431,-0.0030598,0.0026132,-0.0060645,-0.0069946,0.005867,0.0035779,-0.0010836,0.0008912,-0.0019941,-0.0022293,0.001834,0.0011205,-0.00035158,0.00031397,-0.00080748, > coefs
+
+
+echo 0 > passthrough
+echo 0.2 > threshold
+echo 3.0 > gain1
+echo 1.0 > gain2
+echo 0.33 > exponent
+cat passthrough
+cat threshold
+cat gain1
+cat gain2
+cat exponent
+
+echo 0.08 > threshold
+echo 0.2 > gain2
+echo 0.1 > exponent
+cat threshold
+cat gain2
+cat exponent
+
+
+ signal reg0_compression_threshold : signed(31 downto 0) := "00000001100110011001100110011010";  -- 0.1 
+  signal reg1_gain1                 : signed(31 downto 0) := "01000000000000000000000000000000";  -- 4.0
+  signal reg2_gain2                 : signed(31 downto 0) := "00100000000000000000000000000000";  -- 2.0
+  signal reg3_exponent              : signed(31 downto 0) := "00000100110011001100110011001101";  -- 0.3
+  signal reg4_passthrough           : signed(31 downto 0) := "00000000000000000000000000000000";  -- 0  (1=passthrough)
+  
+
+

@@ -1,0 +1,10 @@
+Solution to svn icons not showing up in Windows 10
+
+1. run regedit
+2. Goto: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\explorer\ShellIconOverlayIdentifiers 
+3. Add spaces (I added 4) to the front of Tortoise icon names so they will be listed first (Windows 10 will only use the first 15)
+4. restart computer
+
+
+
+
