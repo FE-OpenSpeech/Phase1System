@@ -1,0 +1,105 @@
+function [fstr] = fxpt2str(fo)
+% FXPT2STR - Creates a fixed-point string with binary point inserted.
+% This function returns a binary fixed-point string with the 
+% binary point inserted in the proper location.  
+% If the value fo is negative, it will change the value to abs(fo) and then 
+% insert a negative sign '-' at the beginning of the string so that
+% the reader doesn't have to deal with negative 2's complement numbers.
+%
+% Syntax:  [Output1] = function_name(Input1)
+%
+% Inputs:
+%    Input1 - A fixed-point object created by the fo=fi() function
+%             from the Fixed-Point Toolbox.
+% Outputs:
+%    Output1 - Returns a character string with the binary point inserted 
+%              into the proper location in the binary string representation.  
+%              If the value is negative, it will change the value to 
+%              abs(fo) and then insert a negative sign '-' at the beginning 
+%              of the string so that the reader doesn't have to deal with 
+%              negative 2's complement fixed-point numbers.  It also adds
+%              a blank space in the front of positive numbers so that
+%              positive strings will align with negative strings.
+%
+% Examples: 
+%    Example 1:  Positive Fixed Point Value
+%                a=fi(3.875,1,14,10)
+%                          a = 3.8750
+%                          DataTypeMode: Fixed-point: binary point scaling
+%                          Signedness: Signed
+%                          WordLength: 14
+%                          FractionLength: 10
+%                 a.bin = 00111110000000    
+%                 fxpt2str(a) = 011.1110000000
+%
+%    Example 2:  Negative Fixed Point Value
+%                a=fi(-3.875,1,14,10)
+%                          a = -3.8750
+%                          DataTypeMode: Fixed-point: binary point scaling
+%                          Signedness: Signed
+%                          WordLength: 14
+%                          FractionLength: 10
+%                 a.bin = 11000010000000   
+%                 fxpt2str(a) = -011.1110000000
+%
+% Matlab R2017a
+% Toolbox required: Fixed-Point Designer
+% Other m-files required: none
+% Subfunctions: none
+% MAT-files required: none
+%
+% Author:   Ross Snider, PhD
+% Address1: ECE Dept. 610 Cobleigh Hall, Montana State University, Bozeman, MT 59717 
+% Address2: Flat Earth Inc. 985 Technology Blvd Bozeman, MT 59718
+% Email:    ross.snider@montana.edu
+% Website:  http://www.montana.edu/rksnider
+% Date:     November 2016; Last revision: 14-Mar-2017
+% License:  The MIT License (MIT)  See description of MIT License at the end of this file.
+%
+%------------------------ BEGINNING OF CODE -------------------------------
+W    = fo.WordLength;                   % Number of bits in word
+F    = fo.FractionLength;               % Number of bits in Fraction field
+Sign = fo.Signedness;                   % Get sign ('Signed' or 'Unsigned') 
+S    = double(strcmp(Sign,'Signed'));   % S=1 if signed, S=0 if unsigned
+I    = W-F-S;                           % Number of bits in Integer field
+if fo >= 0  % positive case
+    str = fo.bin;                       % Get binary string
+    Istr = str(S+1:S+I);                % Integer portion of string
+    Fstr = str(end-F+1:end);            % Fraction portion of string
+    fstr = [' ' Istr '.' Fstr];         % Construct new string
+else        % negative case
+    a=abs(fo);                          % Convert to positive
+    str = a.bin;                        % Get binary string
+    Istr = str(S+1:S+I);                % Integer portion of string
+    Fstr = str(end-F+1:end);            % Fraction portion of string
+    fstr = ['-' Istr '.' Fstr];         % Construct new string
+end
+%---------------------------- END OF CODE ---------------------------------
+% Please send suggestions for improvement of the function 
+% to Ross Snider at this email address: ross.snider@montana.edu
+%
+% License:
+% The MIT License (MIT)
+% Copyright (c) 2016  Ross Snider 
+%
+% Permission is hereby granted, free of charge, to any person obtaining 
+% a copy of this software and associated documentation files 
+% (the "Software"), to deal in the Software without restriction, 
+% including without limitation the rights to use, copy, modify, merge, 
+% publish, distribute, sublicense, and/or sell copies of the Software, 
+% and to permit persons to whom the Software is furnished to do so, 
+% subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be 
+% included in all copies or substantial portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+% EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
