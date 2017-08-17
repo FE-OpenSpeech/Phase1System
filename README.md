@@ -40,7 +40,7 @@ More information can be found at:
     
     
     
-## Open Source Software Released under the MIT License
+## Software Released under the MIT License
 
 Copyright 2017 Flat Earth, Inc.
 
